@@ -1,3 +1,4 @@
+// const content = document.getElementById('content');
 const object = document.getElementById('object');
 const gameContainer = document.getElementById('game-container');
 const gridsField = document.getElementById('grids');
@@ -6,8 +7,12 @@ const canvas = document.getElementById('btn-canvas');
 let sizeOfScreen;
 if (window.innerWidth <= 700) {
     sizeOfScreen = Math.floor(window.innerWidth / 10) * 10;
+    canvas.classList.remove('hide');
 } else {
     sizeOfScreen = 700;
+    // content.style.position = 'relative';
+    // content.style.left = ((window.innerWidth - sizeOfScreen) / 2) + 'px';
+    canvas.classList.add('hide');
 }
 
 gameContainer.style.width = sizeOfScreen + 'px';
