@@ -5,22 +5,7 @@ body {
     padding: 0;
 }
 
-.container {
-    
-}
-
-
-@media (max-width: 768px) {
-    
-}
-
-#grids,
-#game-container {
-    width: 500px;
-    height: 500px;
-}
-.grid-cell,
-#object {
+.grid-cell {
     width: 10%;
     height: 10%;
 }
@@ -39,6 +24,7 @@ body {
 }
 
 #game-container {
+    min-width: 600px;
     background-image: url('grass.jpg');
     background-repeat: repeat;
     background-size: 200px;
@@ -60,38 +46,9 @@ body {
     background-size: 50px;
 }
 
-#control {
-    width: 225px;
-    height: 225px;
+#btn-canvas {
     position: relative;
-    top: 10px;
-    margin: 0 10px;
-}
-
-#btn-left,
-#btn-up,
-#btn-down,
-#btn-right {
-    position: absolute;
-    width: 75px;
-    height: 75px;
-    border-radius: 50px;
-}
-
-#btn-left {
-    top: 75px;
-}
-
-#btn-up {
-    left: 75px;
-}
-
-#btn-down {
-    top: 150px;
-    left: 75px;
-}
-
-#btn-right {
-    top: 75px;
-    left: 150px;
+    width: 300px;
+    height: 150px;
+    
 }
