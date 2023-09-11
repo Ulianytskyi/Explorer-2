@@ -1,58 +1,66 @@
 body {
     font-family: Arial, sans-serif;
-    /* text-align: center; */
+    background-color: #f0f0f0;
     margin: 0;
+    padding: 0;
+}
+
+.container {
+    
+}
+
+
+@media (max-width: 768px) {
+    
+}
+
+#grids,
+#game-container {
+    width: 500px;
+    height: 500px;
+}
+.grid-cell,
+#object {
+    width: 10%;
+    height: 10%;
 }
 
 #grids {
     position: absolute;
-    width: 500px;
-    height: 500px;
     z-index: 10;
     font-size: 0;
 }
 
 .grid-cell {
     display: inline-flex;
-    width: 50px;
-    height: 50px;
     background-color: rgba(172, 255, 47, 0);
     outline: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 16px;
-    
 }
 
 #game-container {
-    width: 500px;
-    height: 500px;
-    /* background-color:azure; */
     background-image: url('grass.jpg');
     background-repeat: repeat;
     background-size: 200px;
     outline: 1px solid rgba(0, 0, 0, 1);
-    
 }
 
 #object {
-    width: 50px;
-    height: 50px;
     background-color: rgb(0, 140, 255, 0);
     position: relative;
     transition: left 0.3s ease, top 0.3s ease;
-    font-size: 35px;
+    /* font-size: 20px; */
     text-align: center;
 }
 
 #wall {
     position: absolute;
-    /* background-color: rgb(153, 87, 12); */
-    font-size: 18px;
+    font-size: 10px;
     background-image: url('forest.png');
     background-size: 50px;
 }
 
 #control {
-    /* background-color: bisque; */
     width: 225px;
     height: 225px;
     position: relative;

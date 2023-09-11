@@ -1,9 +1,22 @@
 const object = document.getElementById('object');
 const gameContainer = document.getElementById('game-container');
+const gridsField = document.getElementById('grids');
+
+let sizeOfScreen = 300;
+
+gameContainer.style.width = sizeOfScreen + 'px';
+gameContainer.style.height = sizeOfScreen + 'px';
+gridsField.style.width = sizeOfScreen + 'px';
+gridsField.style.height = sizeOfScreen + 'px';
+
+let rate = sizeOfScreen / 10;
+
+object.style.fontSize = rate * 67 / 100 + 'px';
+
 
 let wallArray = [];
 
-// collider objects --------------------------------------------------
+// collider objects ------------------------------------------------------
 
 function createCollidersArray(number, objectArray, idName) {
     for (let i = 0; i < number; i++){
@@ -22,17 +35,19 @@ function createCollider (target, props) {
     target.style.width = props.width + 'px';
 }
 
+// collider objects creating -----------------------------------------------
+
 createCollidersArray (8, wallArray, 'wall');
 
 let coordsArray = [
-    {top: 0, left: 250, height: 200, width: 50},
-    {top: 100, left: 150, height: 400, width: 50},
-    {top: 300, left: 150, height: 50, width: 250},
-    {top: 100, left: 350, height: 300, width: 50},
-    {top: 0, left: 50, height: 400, width: 50},
-    {top: 100, left: 400, height: 50, width: 50},
-    {top: 200, left: 450, height: 100, width: 50},
-    {top: 350, left: 400, height: 50, width: 50}
+    {top: rate * 2, left: rate * 3, height: rate * 8, width: rate * 1},
+    {top: rate * 0, left: rate * 5, height: rate * 4, width: rate * 1},
+    {top: rate * 6, left: rate * 4, height: rate * 1, width: rate * 3},
+    {top: rate * 3, left: rate * 7, height: rate * 5, width: rate * 1},
+    {top: rate * 0, left: rate * 1, height: rate * 8, width: rate * 1},
+    {top: rate * 2, left: rate * 7, height: rate * 1, width: rate * 2},
+    {top: rate * 4, left: rate * 9, height: rate * 2, width: rate * 1},
+    {top: rate * 7, left: rate * 8, height: rate * 1, width: rate * 1}
 ];
 
 createCollider (wallArray[0], coordsArray[0]);
@@ -48,13 +63,13 @@ createCollider (wallArray[7], coordsArray[7]);
 
 let objectX = 0;
 let objectY = 0;
-
+ 
 function moveObject(x, y) {
     const newX = objectX + x;
     const newY = objectY + y;
 
-    if (newX >= 0 && newX <= 500 - object.clientWidth && 
-        newY >= 0 && newY <= 500 - object.clientHeight) {
+    if (newX >= 0 && newX <= rate * 10 - object.clientWidth && 
+        newY >= 0 && newY <= rate * 10 - object.clientHeight) {
       
         const objectRect = object.getBoundingClientRect();
 
@@ -86,16 +101,16 @@ function moveObject(x, y) {
 document.addEventListener("keydown", (event) => {
     switch (event.key) {
         case "ArrowUp":
-            moveObject(0, -50);
+            moveObject(0, -rate);
             break;
         case "ArrowDown":
-            moveObject(0, 50);
+            moveObject(0, rate);
             break;
         case "ArrowLeft":
-            moveObject(-50, 0);
+            moveObject(-rate, 0);
             break;
         case "ArrowRight":
-            moveObject(50, 0);
+            moveObject(rate, 0);
             break;
     }
 });
