@@ -7,20 +7,25 @@
     <title>DG: Explorer 2, vr.1.4</title>
 </head>
 <body>
+    <div id="fullscreen-element">
 
+        <div id="content">
+            
+            <div id="items"></div>
+            <div id="grids"></div>
+            <div id="game-container">
+                <!-- <div id="wall"></div> -->
+                <div id="object">👨🏻</div>
+            </div>
     
-    <div id="content">
-   
-        <div id="grids"></div>
-        <div id="game-container">
-            <!-- <div id="wall"></div> -->
-            <div id="object">👨🏻</div>
         </div>
-  
+
+        <canvas id="btn-canvas" class="hide"></canvas>
     </div>
+    <button id="fullscreen-button">Увімкнути повноекраний режим</button>
 
-    <canvas id="btn-canvas" class="hide"></canvas>
 
+    <script type="module" src="collider-objects.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

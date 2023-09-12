@@ -37,6 +37,7 @@ body {
     transition: left 0.3s ease, top 0.3s ease;
     /* font-size: 20px; */
     text-align: center;
+    z-index: 100;
 }
 
 #wall {
@@ -55,4 +56,26 @@ body {
 
 .hide {
     display: none;
+}
+
+#fullscreen-element {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff; /* Колір фону може бути на ваш вибір */
+}
+
+#items {
+    position: absolute;
+    z-index: 15;
+}
+
+.apple {
+    position: absolute;
+    width: 30px;
+    background-color: grey;
+    font-size: 32px;
+    left: 60px;
 }

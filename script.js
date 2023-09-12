@@ -2,6 +2,7 @@
 const object = document.getElementById('object');
 const gameContainer = document.getElementById('game-container');
 const gridsField = document.getElementById('grids');
+const itemsField = document.getElementById('items');
 const canvas = document.getElementById('btn-canvas');
 
 let sizeOfScreen;
@@ -32,22 +33,7 @@ let wallArray = [];
 
 // collider objects ------------------------------------------------------
 
-function createCollidersArray(number, objectArray, idName) {
-    for (let i = 0; i < number; i++){
-        let collideObject = document.createElement('div');
-        collideObject.id = `${idName}`;
-        collideObject.textContent = '';
-        gameContainer.appendChild(collideObject);
-        objectArray.push(collideObject);
-    }
-}
-
-function createCollider (target, props) {
-    target.style.top = props.top + 'px';
-    target.style.left = props.left + 'px';
-    target.style.height = props.height + 'px';
-    target.style.width = props.width + 'px';
-}
+import { createCollidersArray, createCollider } from './collider-objects.js';
 
 // collider objects creating -----------------------------------------------
 
@@ -106,10 +92,15 @@ function moveObject(x, y) {
         object.style.left = objectX + 'px';
         object.style.top = objectY + 'px';
 
+        // console.log(objectX, objectY);
+        checkItem(objectX, objectY, objectsArray);
+
         setTimeout(() => {
             object.style.transition = 'none';
         }, 300);
     }
+    
+    
 }
 
 function simulateKeyPress(key) {
@@ -234,3 +225,62 @@ document.addEventListener('touchend', (event) => {
 
     lastTouchEnd = currentTime;
 });
+
+// full screen ----------------------------------------------
+
+const fullscreenButton = document.getElementById('fullscreen-button');
+const fullscreenElement = document.getElementById('fullscreen-element');
+
+function enterFullscreen() {
+  if (fullscreenElement.requestFullscreen) {
+    fullscreenElement.requestFullscreen();
+  } else if (fullscreenElement.mozRequestFullScreen) { 
+    fullscreenElement.mozRequestFullScreen();
+  } else if (fullscreenElement.webkitRequestFullscreen) { 
+    fullscreenElement.webkitRequestFullscreen();
+  } else if (fullscreenElement.msRequestFullscreen) {
+    fullscreenElement.msRequestFullscreen();
+  }
+}
+
+fullscreenButton.addEventListener('click', enterFullscreen);
+
+// items on screen --------------------------------------------
+
+let itemObj;
+
+function createItem (name, icon, left, top) {
+    const coords = [];
+    itemName = document.createElement('div');
+
+    itemName.textContent = icon;
+    itemName.style.position = 'absolute';
+    itemName.style.width = step + 'px';
+    itemName.style.height = step + 'px';
+    itemName.style.fontSize = step * 67 / 100 + 'px';
+    itemName.style.textAlign = 'center';
+    itemName.style.left = step * left + 'px';
+    itemName.style.top = step * top + 'px';
+
+    itemsField.appendChild(itemName);
+
+    coords[0] = name;
+    coords[1] = step * left;
+    coords[2] = step * top;
+
+    return coords;
+}
+
+let objectsArray = [];
+objectsArray.push(createItem('Apple', '🍎', 2, 0));
+objectsArray.push(createItem('Apple', '🍎', 4, 0));
+objectsArray.push(createItem('Bill', '👨🏻‍🦰', 5, 5));
+objectsArray.push(createItem('House', '🏠', 5, 8));
+
+function checkItem (x, y, array) {
+    array.forEach(element => {
+        if (x == element[1] && y == element[2]) {
+            console.log(element[0]);
+        }
+    });
+}
