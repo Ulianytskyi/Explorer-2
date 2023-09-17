@@ -8,6 +8,7 @@ export const canvas = document.getElementById('btn-canvas');
 let sizeOfScreen;
 if (window.innerWidth <= 700) {
     sizeOfScreen = Math.floor(window.innerWidth / 10) * 10;
+    // sizeOfScreen = Math.floor(window.innerWidth * 10) / 10;
     canvas.classList.remove('hide');
 } else {
     sizeOfScreen = 700;
@@ -22,6 +23,10 @@ gridsField.style.width = sizeOfScreen + 'px';
 gridsField.style.height = sizeOfScreen + 'px';
 
 let step = sizeOfScreen / 10;
+
+console.log(window.innerWidth);
+console.log(sizeOfScreen);
+console.log(step);
 
 object.style.fontSize = step * 67 / 100 + 'px';
 object.style.width = step + 'px';
@@ -108,9 +113,14 @@ export function takeObjectsArray() {
 const playerView = document.createElement('div');
 
 export function checkItem (x, y, array) {
-    displayPlayerView()
+    displayPlayerView();
+
     playerView.textContent = '';
+
+    console.log(x, y);
+
     array.forEach(element => {
+
         if (x == element[1] && y == element[2]) {
             playerView.classList.remove('hide');
 
@@ -126,6 +136,7 @@ export function checkItem (x, y, array) {
                 playerView.style.left = -step/2 + 'px';
             }
         }
+
     });
     
 }
