@@ -6,9 +6,9 @@ const itemsField = document.getElementById('items');
 export const canvas = document.getElementById('btn-canvas');
 
 let sizeOfScreen;
+
 if (window.innerWidth <= 700) {
-    sizeOfScreen = Math.floor(window.innerWidth / 10) * 10;
-    // sizeOfScreen = Math.floor(window.innerWidth * 10) / 10;
+    sizeOfScreen = Math.floor(window.innerWidth / 100) * 100;
     canvas.classList.remove('hide');
 } else {
     sizeOfScreen = 700;
@@ -22,11 +22,7 @@ gameContainer.style.height = sizeOfScreen + 'px';
 gridsField.style.width = sizeOfScreen + 'px';
 gridsField.style.height = sizeOfScreen + 'px';
 
-let step = sizeOfScreen / 10;
-
-console.log(window.innerWidth);
-console.log(sizeOfScreen);
-console.log(step);
+export const step = sizeOfScreen / 10;
 
 object.style.fontSize = step * 67 / 100 + 'px';
 object.style.width = step + 'px';
@@ -39,10 +35,6 @@ export function takeScreenSize() {
     return sizeOfScreen;
 }
 
-export function takeStep(){
-    return step;
-}
-
 export function takeWallArray(){
     return wallArray;
 }
@@ -50,28 +42,19 @@ export function takeWallArray(){
 // collider objects ------------------------------------------------------
 
 import { createCollidersArray, createCollider } from "/scripts/collider-objects.js";
+import { takeCoordsArray } from "/scripts/coords-array.js";
 
-createCollidersArray (8, wallArray, 'wall', gameContainer);
+const coordsArray = takeCoordsArray();
 
-let coordsArray = [
-    {top: step * 2, left: step * 3, height: step * 8, width: step * 1},
-    {top: step * 0, left: step * 5, height: step * 4, width: step * 1},
-    {top: step * 6, left: step * 4, height: step * 1, width: step * 3},
-    {top: step * 3, left: step * 7, height: step * 5, width: step * 1},
-    {top: step * 0, left: step * 1, height: step * 8, width: step * 1},
-    {top: step * 2, left: step * 7, height: step * 1, width: step * 2},
-    {top: step * 4, left: step * 9, height: step * 2, width: step * 1},
-    {top: step * 7, left: step * 8, height: step * 1, width: step * 1}
-];
+createCollidersArray (coordsArray.length, wallArray, 'wall', gameContainer);
 
-// createCollider (wallArray[0], coordsArray[0]);
-// createCollider (wallArray[1], coordsArray[1]);
-// createCollider (wallArray[2], coordsArray[2]);
-// createCollider (wallArray[3], coordsArray[3]);
-// createCollider (wallArray[4], coordsArray[4]);
-// createCollider (wallArray[5], coordsArray[5]);
-// createCollider (wallArray[6], coordsArray[6]);
-// createCollider (wallArray[7], coordsArray[7]);
+function createColliderMass (wallArray, coordsArray) {
+    for (let i = 0; i < coordsArray.length; i++) {
+        createCollider (wallArray[i], coordsArray[i]);
+    }
+}
+createColliderMass(wallArray, coordsArray);
+
 
 // items on screen --------------------------------------------
 
@@ -101,8 +84,12 @@ function createItem (itemsField, name, icon, left, top) {
 }
 
 let objectsArray = [];
-objectsArray.push(createItem(itemsField, 'Apple', '🍎', 9, 1));
 objectsArray.push(createItem(itemsField, 'Apple', '🍎', 0, 1));
+objectsArray.push(createItem(itemsField, 'Apple', '🍎', 1, 6));
+objectsArray.push(createItem(itemsField, 'Apple', '🍎', 3, 9));
+objectsArray.push(createItem(itemsField, 'Apple', '🍎', 4, 2));
+objectsArray.push(createItem(itemsField, 'Apple', '🍎', 7, 6));
+objectsArray.push(createItem(itemsField, 'Apple', '🍎', 9, 0));
 objectsArray.push(createItem(itemsField, 'Bill', '👨🏻‍🦰', 5, 5));
 objectsArray.push(createItem(itemsField, 'House', '🏠', 5, 8));
 
@@ -117,16 +104,26 @@ export function checkItem (x, y, array) {
 
     playerView.textContent = '';
 
-    console.log(x, y);
-
     array.forEach(element => {
 
         if (x == element[1] && y == element[2]) {
+            const useButton = document.createElement('button');
             playerView.classList.remove('hide');
 
             playerView.textContent = object.textContent;
-            // playerView.textContent += ' ';
+
             playerView.textContent += element[3];
+
+            useButton.textContent = 'Use';
+            useButton.classList.add('use-btn');
+
+            useButton.addEventListener('click', () => {
+                let index = array.indexOf(element);
+                removeItemByIndex(index, x, y);
+                console.log('>>', index, x, y);
+            });
+
+            playerView.appendChild(useButton);
             
             if (x == 0) {
                 playerView.style.left = 0 + 'px';
@@ -148,4 +145,22 @@ function displayPlayerView() {
     playerView.style.height = step + 'px';
     playerView.style.top = -step/100 + 'px';
     object.appendChild(playerView);
+
 }
+
+function removeItemByIndex(indexToRemove, x, y) {
+    if (indexToRemove >= 0 && indexToRemove < objectsArray.children.length) {
+        objectsArray.removeChild(indexToRemove);  
+        let newItem = createItem(itemsField, 'Grass', '🌱', x, y);
+        objectsArray.insertBefore(newItem, indexToRemove);
+
+    }
+}
+
+
+
+// console.log(itemsField.children[1].innerHTML);
+// console.log(itemsField.children[2].innerHTML);
+// console.log(itemsField.children[3].innerHTML);
+
+//   removeItemByIndex(2);

@@ -1,7 +1,8 @@
-import { canvas, takeScreenSize, takeStep, takeWallArray, checkItem, takeObjectsArray } from "/scripts/script.js";
+import { canvas, takeScreenSize, step, takeWallArray, checkItem, takeObjectsArray } from "/scripts/script.js";
+
+export const stepForExport = step;
 
 let sizeOfScreen = takeScreenSize();
-let step = takeStep();
 let wallArray = takeWallArray();
 let canvasLeft = (sizeOfScreen - 300) / 2;
 let canvasTop = Math.floor(canvasLeft / 2);
@@ -38,7 +39,6 @@ function moveObject(x, y) {
         object.style.left = objectX + 'px';
         object.style.top = objectY + 'px';
 
-        // console.log(objectX, objectY);
         checkItem(objectX, objectY, objectsArray);
 
         setTimeout(() => {
