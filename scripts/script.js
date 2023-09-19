@@ -3,6 +3,8 @@ const object = document.getElementById('object');
 const gameContainer = document.getElementById('game-container');
 const gridsField = document.getElementById('grids');
 const itemsField = document.getElementById('items');
+const infoField = document.getElementById('info-cloud');
+const inventoryField = document.getElementById('inventory');
 export const canvas = document.getElementById('btn-canvas');
 
 let sizeOfScreen;
@@ -53,8 +55,7 @@ function createColliderMass (wallArray, coordsArray) {
         createCollider (wallArray[i], coordsArray[i]);
     }
 }
-createColliderMass(wallArray, coordsArray);
-
+// createColliderMass(wallArray, coordsArray);
 
 // items on screen --------------------------------------------
 
@@ -99,32 +100,53 @@ export function takeObjectsArray() {
 
 const playerView = document.createElement('div');
 
+let isLocked = true;
+let inventoryArray = [];
+let inventoryCount = 0;
+
+inventoryField.innerHTML = 'Inventory: ';
+
+
 export function checkItem (x, y, array) {
     displayPlayerView();
-
     playerView.textContent = '';
-
     array.forEach(element => {
-
         if (x == element[1] && y == element[2]) {
             const useButton = document.createElement('button');
-            playerView.classList.remove('hide');
-
-            playerView.textContent = object.textContent;
-
-            playerView.textContent += element[3];
-
-            useButton.textContent = 'Use';
-            useButton.classList.add('use-btn');
-
-            useButton.addEventListener('click', () => {
-                let index = array.indexOf(element);
-                removeItemByIndex(index, x, y);
-                console.log('>>', index, x, y);
-            });
-
-            playerView.appendChild(useButton);
-            
+            if (element[3] != 'X') {
+                playerView.classList.remove('hide');
+                playerView.textContent = object.textContent;
+                playerView.textContent += element[3];
+                useButton.textContent = 'Use';
+                useButton.classList.add('use-btn');
+                useButton.style.width = step + 'px';
+                useButton.style.height = step + 'px';
+                useButton.style.left = step + 'px';
+                useButton.addEventListener('click', () => {
+                    if (element[0] == 'Apple') {
+                        let index = array.indexOf(element);
+                        takeItemByIndex(index, element, element[1], element[2]);
+                        playerView.textContent = '';
+                        playerView.textContent = object.textContent;
+                    } else if (element[0] == 'Bill') {
+                        if (inventoryCount == objectsArray.length - 2) {
+                            infoDisplay('Take this!','🔑');
+                            inventoryField.innerHTML = 'Inventory: 🔑';
+                        } else {
+                            infoDisplay('Bring me all the apples!','And I`ll give you the key');
+                        }
+                    } else if (element[0] == 'House') {
+                        if (inventoryField.innerHTML == 'Inventory: 🔑') {
+                            isLocked = false;
+                            inventoryField.innerHTML = 'Inventory: ';
+                            infoDisplay('It`s open!','You can come in now!');
+                        } else {
+                            infoDisplay('Closed!', 'You need a key'); 
+                        }
+                    }
+                });
+                playerView.appendChild(useButton);
+            }    
             if (x == 0) {
                 playerView.style.left = 0 + 'px';
             } else if (x >= 430) {
@@ -133,34 +155,32 @@ export function checkItem (x, y, array) {
                 playerView.style.left = -step/2 + 'px';
             }
         }
-
     });
-    
 }
 
 function displayPlayerView() {
+    infoField.classList.add('hide');
     playerView.classList.add('hide');
     playerView.classList.add('player-view');
     playerView.style.width = step * 2 + 'px';
     playerView.style.height = step + 'px';
     playerView.style.top = -step/100 + 'px';
     object.appendChild(playerView);
-
 }
 
-function removeItemByIndex(indexToRemove, x, y) {
-    if (indexToRemove >= 0 && indexToRemove < objectsArray.children.length) {
-        objectsArray.removeChild(indexToRemove);  
-        let newItem = createItem(itemsField, 'Grass', '🌱', x, y);
-        objectsArray.insertBefore(newItem, indexToRemove);
-
+function takeItemByIndex(index, element, x, y) {
+    if (index >= 0 && index < itemsField.children.length) {
+        element[0] = 'X';
+        element[3] = 'X';
+        inventoryCount += 1;
+        inventoryField.innerHTML += '🍎';
+        itemsField.children[index].innerHTML = 'X';
     }
 }
 
-
-
-// console.log(itemsField.children[1].innerHTML);
-// console.log(itemsField.children[2].innerHTML);
-// console.log(itemsField.children[3].innerHTML);
-
-//   removeItemByIndex(2);
+function infoDisplay(text1, text2) {
+    infoField.classList.remove('hide');
+    infoField.innerHTML = text1;
+    infoField.innerHTML += `<br>`;
+    infoField.innerHTML += text2;
+}
