@@ -101,6 +101,7 @@ export function takeObjectsArray() {
 const playerView = document.createElement('div');
 
 let isLocked = true;
+let goalComplete = false;
 let inventoryArray = [];
 let inventoryCount = 0;
 
@@ -130,16 +131,25 @@ export function checkItem (x, y, array) {
                         playerView.textContent = object.textContent;
                     } else if (element[0] == 'Bill') {
                         if (inventoryCount == objectsArray.length - 2) {
-                            infoDisplay('Take this!','🔑');
-                            inventoryField.innerHTML = 'Inventory: 🔑';
+                            if (!goalComplete) {
+                                infoDisplay('Take this!','🔑');
+                                goalComplete = true;
+                                inventoryField.innerHTML = 'Inventory: 🔑';
+                            } else {
+                                infoDisplay('You already have the key.','Go home!');
+                            }
                         } else {
                             infoDisplay('Bring me all the apples!','And I`ll give you the key');
                         }
                     } else if (element[0] == 'House') {
                         if (inventoryField.innerHTML == 'Inventory: 🔑') {
-                            isLocked = false;
-                            inventoryField.innerHTML = 'Inventory: ';
-                            infoDisplay('It`s open!','You can come in now!');
+                            if (isLocked) {
+                                isLocked = false;
+                                infoDisplay('It`s open!','You can come in now!');
+                            } else {
+                                document.querySelector('.final-screen').classList.remove('hide');
+                                gameContainer.classList.add('hide');
+                            }
                         } else {
                             infoDisplay('Closed!', 'You need a key'); 
                         }

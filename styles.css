@@ -93,7 +93,9 @@ body {
     border-radius: 6px;
     border: 3px solid green;
     padding: 4px 10px;
-    z-index: 10;
+    z-index: 100;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .use-btn {
@@ -101,3 +103,51 @@ body {
     opacity: 0;
     cursor: pointer;
 }
+
+#inventory {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 40px;
+    width: 84%;
+    margin: 10px 0;
+    /* background-color: greenyellow; */
+    text-transform: uppercase;
+}
+
+.final-screen {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    background: #fff;
+}
+
+.house,
+.man,
+.final-text {
+    position: relative;
+    display: flex;
+    font-size: 300px;
+    justify-content: center;
+    top: 100px;
+}
+.man { 
+    font-size: 50px;
+    top: -44px;
+    left: 42px
+}
+.final-text {
+    font-size: 50px;
+    top: 30px;
+
+}
+
+@media (max-width: 300px) {
+    .man {
+      top: -105px; 
+      left: 46px;
+      font-size: 60px;
+    }
+  }
