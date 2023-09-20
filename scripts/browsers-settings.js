@@ -31,3 +31,7 @@ function enterFullscreen() {
 }
 
 fullscreenButton.addEventListener('click', enterFullscreen);
+
+fullscreenElement.addEventListener('dblclick', function (e) {
+  e.preventDefault();
+});

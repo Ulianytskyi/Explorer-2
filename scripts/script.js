@@ -1,10 +1,10 @@
 
 const object = document.getElementById('object');
-const gameContainer = document.getElementById('game-container');
+export const gameContainer = document.getElementById('game-container');
 const gridsField = document.getElementById('grids');
 const itemsField = document.getElementById('items');
 const infoField = document.getElementById('info-cloud');
-const inventoryField = document.getElementById('inventory');
+export const inventoryField = document.getElementById('inventory');
 export const canvas = document.getElementById('btn-canvas');
 
 let sizeOfScreen;
@@ -26,8 +26,9 @@ gridsField.style.height = sizeOfScreen + 'px';
 
 export const step = sizeOfScreen / 10;
 
-object.style.fontSize = step * 67 / 100 + 'px';
+object.style.fontSize = step * 67 / 100 +'px';
 object.style.width = step + 'px';
+object.style.height = step + 'px';
 
 let wallArray = [];
 
@@ -55,7 +56,7 @@ function createColliderMass (wallArray, coordsArray) {
         createCollider (wallArray[i], coordsArray[i]);
     }
 }
-// createColliderMass(wallArray, coordsArray);
+createColliderMass(wallArray, coordsArray);
 
 // items on screen --------------------------------------------
 
@@ -98,15 +99,13 @@ export function takeObjectsArray() {
     return objectsArray;
 }
 
-const playerView = document.createElement('div');
+export const playerView = document.createElement('div');
 
 let isLocked = true;
 let goalComplete = false;
-let inventoryArray = [];
-let inventoryCount = 0;
+export let inventoryCount = 0;
 
 inventoryField.innerHTML = 'Inventory: ';
-
 
 export function checkItem (x, y, array) {
     displayPlayerView();
@@ -123,39 +122,11 @@ export function checkItem (x, y, array) {
                 useButton.style.width = step + 'px';
                 useButton.style.height = step + 'px';
                 useButton.style.left = step + 'px';
-                useButton.addEventListener('click', () => {
-                    if (element[0] == 'Apple') {
-                        let index = array.indexOf(element);
-                        takeItemByIndex(index, element, element[1], element[2]);
-                        playerView.textContent = '';
-                        playerView.textContent = object.textContent;
-                    } else if (element[0] == 'Bill') {
-                        if (inventoryCount == objectsArray.length - 2) {
-                            if (!goalComplete) {
-                                infoDisplay('Take this!','🔑');
-                                goalComplete = true;
-                                inventoryField.innerHTML = 'Inventory: 🔑';
-                            } else {
-                                infoDisplay('You already have the key.','Go home!');
-                            }
-                        } else {
-                            infoDisplay('Bring me all the apples!','And I`ll give you the key');
-                        }
-                    } else if (element[0] == 'House') {
-                        if (inventoryField.innerHTML == 'Inventory: 🔑') {
-                            if (isLocked) {
-                                isLocked = false;
-                                infoDisplay('It`s open!','You can come in now!');
-                            } else {
-                                document.querySelector('.final-screen').classList.remove('hide');
-                                gameContainer.classList.add('hide');
-                            }
-                        } else {
-                            infoDisplay('Closed!', 'You need a key'); 
-                        }
-                    }
-                });
+                
+                useButtonAction(useButton, element, array);
+                
                 playerView.appendChild(useButton);
+
             }    
             if (x == 0) {
                 playerView.style.left = 0 + 'px';
@@ -178,7 +149,7 @@ function displayPlayerView() {
     object.appendChild(playerView);
 }
 
-function takeItemByIndex(index, element, x, y) {
+export function takeItemByIndex(index, element, x, y) {
     if (index >= 0 && index < itemsField.children.length) {
         element[0] = 'X';
         element[3] = 'X';
@@ -188,9 +159,52 @@ function takeItemByIndex(index, element, x, y) {
     }
 }
 
-function infoDisplay(text1, text2) {
+export function infoDisplay(text1, text2) {
     infoField.classList.remove('hide');
     infoField.innerHTML = text1;
     infoField.innerHTML += `<br>`;
     infoField.innerHTML += text2;
 }
+
+function useButtonAction(useButton, element, array) {
+    useButton.addEventListener('click', () => {
+        if (element[0] == 'Apple') {
+
+            let index = array.indexOf(element);
+            takeItemByIndex(index, element, element[1], element[2]);
+            playerView.textContent = '';
+            playerView.textContent = object.textContent;
+
+        } else if (element[0] == 'Bill') {
+
+            if (inventoryCount == objectsArray.length - 2) {
+                if (!goalComplete) {
+                    infoDisplay('Take this!','🔑');
+                    goalComplete = true;
+                    inventoryField.innerHTML = 'Inventory: 🔑';
+                } else {
+                    infoDisplay('You already have the key.','Go home!');
+                }
+            } else {
+                infoDisplay('Bring me all the apples!','And I`ll give you the key');
+            }
+
+        } else if (element[0] == 'House') {
+
+            if (inventoryField.innerHTML == 'Inventory: 🔑') {
+                if (isLocked) {
+                    isLocked = false;
+                    infoDisplay('It`s open!','You can come in now!');
+                } else {
+                    document.querySelector('.final-screen').classList.remove('hide');
+                    gameContainer.classList.add('hide');
+                    document.querySelector('.final-img').style.width = sizeOfScreen + 'px';
+                }
+            } else {
+                infoDisplay('Closed!', 'You need a key'); 
+            }
+
+        }
+    });
+}
+
